@@ -12,7 +12,7 @@ contract Bridge {
     }
 
     function deposit() public {
-
+        
     }
 
     function withdraw() public {

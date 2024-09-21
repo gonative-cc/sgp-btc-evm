@@ -32,10 +32,10 @@ contract DMarketPlace {
 
     function sellDNFT(uint256 tokenId, uint256 price) public {
         require(IERC721(dNFTAddress).ownerOf(tokenId) == msg.sender);
-        require(idMap.get(tokenId) == 0);
+        require(!idMap.contains(tokenId));
 
         NFTStatus memory nftStatus = NFTStatus({
-            seller: address(this),
+            seller: msg.sender,
             price: price, 
             tokenId: tokenId
         });
@@ -49,7 +49,7 @@ contract DMarketPlace {
     }
     
     function takeDNFT(uint256 tokenId) public payable{
-        require(idMap.get(tokenId) >  0);
+        require(idMap.contains(tokenId));
         NFTStatus memory nftStatus = statusMap[idMap.get(tokenId)];
 
         uint256 value = msg.value;
@@ -62,19 +62,18 @@ contract DMarketPlace {
         seller.transfer(msg.value);
 
         IERC721(dNFTAddress).transferFrom(address(this), msg.sender, tokenId);
-      
-    
         emit Taken(msg.sender, nftStatus);
     }
 
     function getIteams() public view returns(NFTStatus[] memory) {
         NFTStatus[] memory iteam = new NFTStatus[](idMap.length());
         uint256[] memory keys = idMap.keys();
-        for (uint256 i = 1; i <= keys.length; i = i+1) {
+        for (uint256 i = 0; i < keys.length; i = i+1) {
             uint256 tokenId = idMap.get(keys[i]);
             iteam[i] = statusMap[tokenId];
         }
-
         return iteam;
     }
+
+    receive() external payable {}   
 }
