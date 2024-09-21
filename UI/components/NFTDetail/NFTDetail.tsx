@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import myTokenAbi from "../../contractAbi/myTokenAbi";
-import myNFTAbi from "../../contractAbi/myNFT";
+
 import { useRouter } from "next/router";
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
@@ -21,12 +20,12 @@ function NFTDetail() {
   const getNFTData = async () => {
     let marketplaceContact = new ethers.Contract(
       process.env.NEXT_PUBLIC_MYNFT_ADDRESS || "",
-      myNFTAbi,
+      "mytoken",
       signer || provider
     );
     let tokenContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_MYTOKEN_ADDRESS || "",
-      myTokenAbi,
+      "mytoken",
       signer || provider
     );
     const data = await marketplaceContact.getListedTokenByTokenId(tokenId);
