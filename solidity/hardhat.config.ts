@@ -13,6 +13,10 @@ const config: HardhatUserConfig = {
       gasPrice: 100000000,
       chainId: 11155111,
     },
+    linea: {
+      url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY}` ,
+      accounts: [`${process.env.SEPOLIA_PRIVATE_KEY}`],
+    },
     local: {
       url: "http://127.0.0.1:8545"
     }
