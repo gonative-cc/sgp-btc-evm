@@ -20,12 +20,15 @@ import type {
 } from "../common";
 
 export interface BridgeInterface extends Interface {
-  getFunction(nameOrSignature: "deposit" | "withdraw"): FunctionFragment;
+  getFunction(nameOrSignature: "process" | "withdraw"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "process",
+    values: [BytesLike, BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "process", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
@@ -72,7 +75,11 @@ export interface Bridge extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  deposit: TypedContractMethod<[], [void], "nonpayable">;
+  process: TypedContractMethod<
+    [metadata: BytesLike, message: BytesLike],
+    [void],
+    "payable"
+  >;
 
   withdraw: TypedContractMethod<[], [void], "nonpayable">;
 
@@ -81,8 +88,12 @@ export interface Bridge extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "deposit"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+    nameOrSignature: "process"
+  ): TypedContractMethod<
+    [metadata: BytesLike, message: BytesLike],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<[], [void], "nonpayable">;

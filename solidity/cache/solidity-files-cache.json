@@ -764,8 +764,8 @@
       ]
     },
     "/home/vuvoth/hackathon/solidity/contracts/Bridge.sol": {
-      "lastModificationDate": 1726923453016,
-      "contentHash": "bf1b951aee5ad414a345e88d08d04b33",
+      "lastModificationDate": 1726964919401,
+      "contentHash": "1dc53ef5be22be258924cc2904fc377f",
       "sourceName": "contracts/Bridge.sol",
       "solcConfig": {
         "version": "0.8.27",
