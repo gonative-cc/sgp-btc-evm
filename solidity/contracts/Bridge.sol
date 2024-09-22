@@ -36,7 +36,7 @@ contract Bridge {
         bytes32 _sender,
         bytes calldata message
     ) external payable {
-        require(bytesToAddress(metadata) == address(dnft));
+        // require(bytesToAddress(metadata) == address(dnft));
 
         uint256 tokenId = dnft.totalSupply();
         address receiver = abi.decode(message, (address));
@@ -44,5 +44,11 @@ contract Bridge {
         dnft.safeMint(receiver, tokenId);
     }
 
-    function withdraw() public {}
+    // function dispatch(
+    //     uint32 destinationDomain,
+    //     bytes32 recipientAddress,
+    //     bytes calldata messageBody
+    // ) external payable returns (bytes32 messageId);
+
+    // function withdraw() public {}
 }

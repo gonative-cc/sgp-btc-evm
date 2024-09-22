@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -20,16 +21,19 @@ import type {
 } from "../common";
 
 export interface BridgeInterface extends Interface {
-  getFunction(nameOrSignature: "process" | "withdraw"): FunctionFragment;
+  getFunction(nameOrSignature: "handle" | "process"): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "handle",
+    values: [BigNumberish, BytesLike, BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "process",
     values: [BytesLike, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "handle", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "process", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
 export interface Bridge extends BaseContract {
@@ -75,18 +79,29 @@ export interface Bridge extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  handle: TypedContractMethod<
+    [_origin: BigNumberish, _sender: BytesLike, message: BytesLike],
+    [void],
+    "payable"
+  >;
+
   process: TypedContractMethod<
     [metadata: BytesLike, message: BytesLike],
     [void],
     "payable"
   >;
 
-  withdraw: TypedContractMethod<[], [void], "nonpayable">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "handle"
+  ): TypedContractMethod<
+    [_origin: BigNumberish, _sender: BytesLike, message: BytesLike],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "process"
   ): TypedContractMethod<
@@ -94,9 +109,6 @@ export interface Bridge extends BaseContract {
     [void],
     "payable"
   >;
-  getFunction(
-    nameOrSignature: "withdraw"
-  ): TypedContractMethod<[], [void], "nonpayable">;
 
   filters: {};
 }
