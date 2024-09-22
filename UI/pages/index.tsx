@@ -10,9 +10,9 @@ const Home: NextPage = () => {
   return (
     <div>
       <HeroSection />
+      <NFTItems />
       <Slider />
       <NFTStep />
-      <NFTItems />
    </div>
   )
 }
