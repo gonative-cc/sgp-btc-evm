@@ -1,93 +1,37 @@
 import React, { useEffect, useState } from "react";
 import NFTCard from "../NFTCard/NFTCard";
 import { ethers } from "ethers";
-import myTokenAbi from "../../contractAbi/myTokenAbi";
-import myNFTAbi from "../../contractAbi/myNFT";
 import { ToastContainer, toast } from "react-toastify";
+import DNFTAbi from "../../contractAbi/DNFT.js"
+import DMarketPlaceabi from "../../contractAbi/DMarketPlace.js"
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-// import Loader from "../components/Loader/Loader";
-// import connectWallet from "../walletConnect";
-import { useSigner } from "wagmi";
-import { useProvider } from "wagmi";
 import { RotatingLines } from "react-loader-spinner";
 
-function AllNFT() {
-  const { data: signer, isError } = useSigner();
-  const provider = useProvider();
+function AllNFT({ provider }: { provider: ethers.providers.JsonRpcProvider | null }) {
   const [NFTData, setNFTData] = useState<any>();
-  const NFTCardList = [
-    {
-      title: "Orthogon#720",
-      price: "0.668",
-      likes: "028",
-      image: "/design2.webp",
-      tokenId: 5,
-    },
-    {
-      title: "Orthogon#710",
-      price: "0.668",
-      likes: "253",
-      image: "/design1.webp",
-      tokenId: 6,
-    },
-    {
-      title: "Orthogon#750",
-      price: "0.668",
-      likes: "120",
-      image: "/design3.webp",
-      tokenId: 7,
-    },
-    {
-      title: "Orthogon#770",
-      price: "0.668",
-      likes: "207",
-      image: "/design4.webp",
-      tokenId: 8,
-    },
-    {
-      title: "Orthogon#770",
-      price: "0.668",
-      likes: "207",
-      image: "/design7.jpg",
-      tokenId: 9,
-    },
-    {
-      title: "Orthogon#770",
-      price: "0.668",
-      likes: "207",
-      image: "/design8.webp",
-      tokenId: 10,
-    },
-    {
-      title: "Orthogon#770",
-      price: "0.668",
-      likes: "207",
-      image: "/design10.jpg",
-      tokenId: 11,
-    },
-  ];
+  const [signer, setSigner] = useState<ethers.Signer | null>(null);
+
   const getItems = async () => {
     try {
-      // await connectWallet.connectWallet();
-      console.log(window.ethereum);
+      if (!provider || !signer) return;
 
       let marketplaceContract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_MYNFT_ADDRESS || "",
-        myNFTAbi,
-        signer || provider
+        process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS || "",
+        DMarketPlaceabi, // Make sure you define your ABI
+        signer
       );
+
       let tokenContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_MYTOKEN_ADDRESS || "",
-        myTokenAbi,
-        signer || provider
+        DNFTAbi, // Make sure you define your ABI
+        signer
       );
+
       const data = await marketplaceContract.getAllNFTs();
       let newItems: any = await Promise.all(
         data.map(async (d: any) => {
-          console.log(d);
           const tokenUri = await tokenContract.tokenURI(d._tokenId);
-          console.log(tokenUri);
           const meta = await axios.get(tokenUri);
           const price = ethers.utils.formatUnits(d.price.toString(), "ether");
           const imageUrl = `https://ipfs.io/ipfs/${meta.data.image.substr(7)}`;
@@ -100,30 +44,32 @@ function AllNFT() {
             title: meta.data.name,
             desc: meta.data.description,
           };
-          // const tokenUri = await contract.tokenURI(d.tokenId);
         })
       );
       setNFTData(newItems);
-      console.log(newItems);
     } catch (error) {
-      toast.error(
-        "Something to wrong so please check your wallet are connected",
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
+      toast.error("Something went wrong; please check if your wallet is connected.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
   useEffect(() => {
+    const fetchSigner = async () => {
+      if (provider) {
+        const newSigner = provider.getSigner();
+        setSigner(newSigner);
+      }
+    };
+
+    fetchSigner();
+  }, [provider]);
+
+  useEffect(() => {
     getItems();
-  }, []);
+  }, [signer]);
+
   return (
     <div className="">
       <span className="text-white text-3xl font-bold">Our Product</span>
@@ -135,14 +81,7 @@ function AllNFT() {
             })
           ) : (
             <span className="flex justify-center my-auto">
-              {" "}
-              <RotatingLines
-                strokeColor="grey"
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="96"
-                visible={true}
-              />
+              <RotatingLines strokeColor="grey" strokeWidth="5" animationDuration="0.75" width="96" visible={true} />
             </span>
           )}
         </div>
