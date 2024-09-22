@@ -155,7 +155,7 @@ function NFTItems() {
               onClick={() => window.location.href = '/allnft'}
               className="bg-[#00a3ff] hover:bg-[#212e48] text-white rounded-md w-40 duration-300"
             >
-              Buy
+              Bridge
             </button>
           </div>
 
