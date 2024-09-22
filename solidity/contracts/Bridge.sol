@@ -18,8 +18,9 @@ contract Bridge {
         }
     }
 
-    function process(
-        bytes calldata metadata,
+    function handle(
+        uint32 _origin,
+        bytes32 _sender,
         bytes calldata message
     ) external payable {
         require(bytesToAddress(metadata) == address(dnft));
