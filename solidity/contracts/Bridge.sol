@@ -12,10 +12,23 @@ contract Bridge {
     }
 
     // copy to stackoverflow
-    function bytesToAddress(bytes memory bys) private pure returns (address addr) {
+    function bytesToAddress(
+        bytes memory bys
+    ) private pure returns (address addr) {
         assembly {
             addr := mload(add(bys, 20))
         }
+    }
+    
+    function process(
+        bytes calldata metadata,
+        bytes calldata message
+    ) external payable {
+        require(bytesToAddress(metadata) == address(dnft));
+
+        uint256 tokenId = dnft.totalSupply();
+        address receiver = abi.decode(message, (address));
+        dnft.safeMint(receiver, tokenId);
     }
 
     function handle(
@@ -26,7 +39,7 @@ contract Bridge {
         require(bytesToAddress(metadata) == address(dnft));
 
         uint256 tokenId = dnft.totalSupply();
-        (address receiver) = abi.decode(message , (address));
+        address receiver = abi.decode(message, (address));
 
         dnft.safeMint(receiver, tokenId);
     }
