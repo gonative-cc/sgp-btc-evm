@@ -1,6 +1,11 @@
-# sgp-btc-sol
-Solidity marketplace for SGP-BTC project.
+# SGP BTC: Trust Minimized Bitcoin Marketplace
 
+Marketplace smart contract and UI for SGP-BTC EthGlobal Singapore 2024 project.
+
+## Hackathon Demo
+
+* [**Problem statement, User Journey and Presentation**](https://hackmd.io/@robert-zaremba/SyAVLk6aC)
+* [ZK Rollup + the dispatcher bridge](https://github.com/gonative-cc/sgp-btc-chain)
 
 
 <div id="top"></div>
