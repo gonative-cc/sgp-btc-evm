@@ -763,10 +763,10 @@
         "EnumerableSet"
       ]
     },
-    "/Users/nanavas/Developer/ETHGlobalSingapore/Hacking/sgp-btc-evm/solidity/contracts/Lock.sol": {
-      "lastModificationDate": 1726933691708,
-      "contentHash": "747d54b508a67f3748eef5e0221e800e",
-      "sourceName": "contracts/Lock.sol",
+    "/home/vuvoth/hackathon/solidity/contracts/Bridge.sol": {
+      "lastModificationDate": 1726964919401,
+      "contentHash": "1dc53ef5be22be258924cc2904fc377f",
+      "sourceName": "contracts/Bridge.sol",
       "solcConfig": {
         "version": "0.8.27",
         "settings": {
