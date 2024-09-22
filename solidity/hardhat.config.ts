@@ -7,12 +7,17 @@ import 'dotenv/config';
 const config: HardhatUserConfig = {
   solidity: "0.8.27",
   networks: {
-    // sepolia: {
-    //   url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    //   accounts: [`${process.env.SEPOLIA_PRIVATE_KEY}`],
-    //   gasPrice: 100000000,
-    //   chainId: 11155111,
-    // },
+
+    sepolia: {
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+      accounts: [`${process.env.SEPOLIA_PRIVATE_KEY}`],
+      gasPrice: 100000000,
+      chainId: 11155111,
+    },
+    linea: {
+      url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY}` ,
+      accounts: [`${process.env.SEPOLIA_PRIVATE_KEY}`],
+    },
     local: {
       url: "http://127.0.0.1:8545"
     }

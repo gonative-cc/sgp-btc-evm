@@ -1,13 +1,12 @@
-# Sample Hardhat Project
+# Smart contract APIs 
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+### DNFT 
+- Address: 0x7FDcc4e857dd9D38563A1313adCFe0A145fC975D
+- ERC721 smart contract. Each token respective for BTC account. 
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+### DMarketPlace 
+- Address: 0x7FDcc4e857dd9D38563A1313adCFe0A145fC975D
+Simple Market place for DNFT support: 
+- sellDNFT(uint256 tokenId, uint256 price) : Sell `tokeId`-th DNFT with `price` in ETH. 
+- takeDNFT(uint256 tokenId): Take `tokenId` and pay to seller for sure. 
+- getIteams(): Get all nft in market place. We should use the Graph for this API.  
